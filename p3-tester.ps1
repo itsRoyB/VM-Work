@@ -43,7 +43,7 @@ foreach ($line in $csv)
     #################################################################################
     
     $vmhost_user = "root"
-	$vmhost_pass = "vSphereP3"
+	$vmhost_pass = "VSp3"
 	$newhost = $line.Host
 	$host_IP = $line.IP
 	$san0 = $line.SAN0vmk
