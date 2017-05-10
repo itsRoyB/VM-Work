@@ -43,7 +43,7 @@ foreach ($line in $csv)
     #################################################################################
     
     $vmhost_user = "root"
-	$vmhost_pass = "VSp3"
+	$vmhost_pass = "vSphereP3"
 	$newhost = $line.Host
 	$host_IP = $line.IP
 	$san0 = $line.SAN0vmk
@@ -57,7 +57,7 @@ foreach ($line in $csv)
 	$alias = $line.iSCSIAlias
     $vmos_ds = $line.VMOS
 	$datastore = $line.Datastore
-	$ovf_path = "C:\Users\Administrator\Desktop\RB-Scripts\dsl-4-4-10.ova"
+	$ovf_path = "C:\Users\rberkowitz\Desktop\RB-Scripts\OVA-2012_R2\Template-2012_R2.ovf"
 	$VMName = $line.VMName
 	
 Write-Host "Starting Script!" -ForegroundColor Green
@@ -127,16 +127,14 @@ $rename_cam | Set-VirtualPortGroup -Name "Camera Network" | Out-Null
 
 
 #################################################################################
-# Install VMTools on P3 MGMT VM 
+# Use P3 CLI to Send Commands
 #################################################################################
 
-#mkdir -p /mnt/vmw-tools && mount /dev/cdrom /mnt/vmw-tools && VMW_TOOLS=$(ls /mnt/vmw-tools/ | grep .gz) && cp -f /mnt/vmw-tools/${VMW_TOOLS} /tmp/ && umount /mnt/vmw-tools && rmdir /mnt/vmw-tools && tar -zxvf /tmp/${VMW_TOOLS} -C /tmp/ && cd /tmp/vmware-tools-distrib/ && ./vmware-install.pl -d default && rm -rf vmware-tools-distrib/ && rm -f /tmp/${VMW_TOOLS} && cd ~
 
-#################################################################################
-# Console into P3 Mgmt VM and Configure
-#################################################################################
 
-#Invoke-VMScript -VM "Pivot3_VM" -ScriptText "dir" -HostUser $vmhost_user -HostPassword $vmhost_pass -GuestUser p3setip -GuestPassword pivot3
+
+
+
 
 #################################################################################
 # Enable Software iSCSI and  Set Alias and Rescan
@@ -189,6 +187,7 @@ Write-Host "Memory Changed Successfully" -ForegroundColor Green
 Write-Host "Starting VM: $povm!" -ForegroundColor Green
 Start-VM -VM $povm
 
+#Wait
 #################################################################################
 # Upgrade VMTools on Windows Server VM
 #################################################################################
