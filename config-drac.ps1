@@ -16,18 +16,6 @@
 #################################################################################
 
 
-<#################################################################################
-# Set Working Directory
-#################################################################################
-$csvloc = "C:\Users\rberkowitz\Desktop\Stuff\Scripts"
-Set-Location $csvloc
-
-#################################################################################
-# Import CSV
-#################################################################################
-$csv = Import-Csv $csvloc"\post-deploy.xlsx"
-Write-Host "Importing Specified CSV!" -ForegroundColor Green
-#>
 #################################################################################
 # Set Variables
 #################################################################################
@@ -45,8 +33,8 @@ Write-Host "Importing Specified CSV!" -ForegroundColor Green
 	
 	$iDrac_User = "root"  				# This doesnt change #
 	$iDrac_Pass = "calvin" 				# This doesnt change #
-	$iDRAC_Name = "rbt2"
-	$iDRAC_def_IP = "192.168.0.120" 	# This doesnt change #
+	$iDRAC_Name = "rbt"
+	$iDRAC_def_IP = "192.168.0.120" 		# This doesnt change #
 	$iDRAC_new_IP = "192.168.0.2"
 	$iDRAC_Netmask = "255.255.255.0"
 	$iDRAC_Gateway = "192.168.0.1"
@@ -66,13 +54,19 @@ Write-Host "Starting Script!" -ForegroundColor Green
 #################################################################################
 
 # & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass racresetcfg
-
+Write-Host "Setting iDRAC Name!" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_def_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.NIC.DNSRacName $iDRAC_Name
+Write-Host "Setting New iDRAC IP! (please be patient)" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_def_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.IPv4.Address $iDRAC_new_IP
+Write-Host "Setting Subnet!" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.IPv4.Netmask $iDRAC_Netmask
+Write-Host "Setting Gateway!" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.IPv4.Gateway $iDRAC_Gateway
+Write-Host "Setting DNS Address #1!" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.IPv4.DNS1 $iDRAC_DNS1
+Write-Host "Setting DNS Address #2!" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.IPv4.DNS2 $iDRAC_DNS2
+Write-Host "Checking Credential Warning and Disabling!" -ForegroundColor Green
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass set iDRAC.Tuning.DefaultCredentialWarning Disabled
  
 #################################################################################
@@ -80,3 +74,5 @@ Write-Host "Starting Script!" -ForegroundColor Green
 ################################################################################# 
  
 & 'C:\Program Files (x86)\Dell\SysMgt\rac5\racadm.exe' -r $iDRAC_new_IP -u $iDRAC_User -p $iDRAC_Pass serveraction powerup
+
+Write-Host "Script has Completed and Server is Powering On (if not already)!" -ForegroundColor Green
